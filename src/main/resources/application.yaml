@@ -4,3 +4,6 @@ spring:
     username: ms25
     password: password
     driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
