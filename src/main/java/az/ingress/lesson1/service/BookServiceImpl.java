@@ -2,7 +2,6 @@ package az.ingress.lesson1.service;
 
 import az.ingress.lesson1.dto.BookRequestDto;
 import az.ingress.lesson1.dto.BookResponseDto;
-import az.ingress.lesson1.dto.Hello;
 import az.ingress.lesson1.model.Book;
 import az.ingress.lesson1.repository.BookRepository;
 import org.springframework.stereotype.Service;
@@ -11,11 +10,9 @@ import org.springframework.stereotype.Service;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
-    private final Hello hello;
 
-    public BookServiceImpl(BookRepository bookRepository, Hello hello) {
+    public BookServiceImpl(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
-        this.hello = hello;
     }
 
     @Override
@@ -32,12 +29,25 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookResponseDto update(Integer id, BookRequestDto dto) {
-        return null;
+        Book book = Book.builder()
+                .author(dto.getAuthor())
+                .pageCount(dto.getPageCount())
+                .name(dto.getName())
+                .id(id)
+                .build();
+        bookRepository.save(book);
+
+        return BookResponseDto.builder()
+                .author(book.getAuthor())
+                .pageCount(book.getPageCount())
+                .name(book.getName())
+                .id(book.getId())
+                .build();
     }
 
     @Override
     public void delete(Integer id) {
-
+        bookRepository.delete(bookRepository.getReferenceById(id));
     }
 
     @Override
